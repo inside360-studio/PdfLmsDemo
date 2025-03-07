@@ -1,10 +1,9 @@
-import ReactIcon from 'src/assets/react.svg?react';
+import MainPage from './features/main/main';
 
 export const App = () => {
   return (
-    <div className="font-semibold text-lg text-green-500">
-      <ReactIcon width="24px" height="24px" className="text-green-500" />
-      Rendered from react app
+    <div className="font-semibold text-lg text-black">
+      <MainPage />
     </div>
   );
 };

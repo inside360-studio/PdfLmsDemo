@@ -16,8 +16,15 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.9",
+    "axios": "^1.8.1",
+    "i18next": "^24.2.2",
+    "i18next-browser-languagedetector": "^8.0.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-hot-toast": "^2.5.2",
+    "react-i18next": "^15.4.1",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
