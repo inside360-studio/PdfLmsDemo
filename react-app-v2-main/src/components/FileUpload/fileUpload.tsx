@@ -137,7 +137,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
         <CustomButton
           disabled={!file || isLoading}
           onClick={() => handleFileUpload()}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:bg-blue-300 disabled:text-white disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 hover:text-white text-gray-500 font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:bg-blue-300 disabled:text-gray disabled:cursor-not-allowed"
         >
           <div className="flex items-center gap-2">
             <svg
