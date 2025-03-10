@@ -79,43 +79,89 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
   };
 
   return (
-    <>
+    <div className="w-full">
       <ApiValidationErrors problemDetails={apiValidationErrors} />
       <label
         {...getFileRootProps({
-          className: 'dropzone relative',
+          className: 'dropzone relative block w-full',
         })}
       >
         <input
           {...getFileInputProps()}
-          onClick={(event) => event.stopPropagation()} // Prevents the file input from reopening
+          onClick={(event) => event.stopPropagation()}
         />
-        <div className="relative w-40 h-40 bg-gray-200 flex items-center justify-center rounded-lg cursor-pointer">
+        <div
+          className={`border-2 border-dashed ${file ? 'border-blue-400 bg-blue-50' : 'border-gray-300'} 
+          rounded-lg p-6 transition-all duration-200 ease-in-out hover:border-blue-500 
+          hover:bg-blue-50 flex flex-col items-center justify-center cursor-pointer`}
+        >
           {isLoading ? (
             <Spinner />
           ) : (
-            <span className="text-gray-500 font-silka text-center w-full">
-              {file ? file.name : t('clickToUpload')}
-            </span>
+            <>
+              <svg
+                className={`w-12 h-12 ${file ? 'text-blue-500' : 'text-gray-400'} mb-3`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                ></path>
+              </svg>
+
+              {file ? (
+                <div className="text-center">
+                  <p className="text-blue-500 font-medium text-sm mb-1 truncate max-w-xs">
+                    {file.name}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    {formatFileSize(file.size)}
+                  </p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p className="text-gray-700 font-medium mb-1">
+                    {t('clickToUpload')} or drag & drop
+                  </p>
+                  <p className="text-gray-500 text-sm">PDF files up to 100MB</p>
+                </div>
+              )}
+            </>
           )}
         </div>
-        {file && !isFileUploading && (
-          <p className="text-gray-500 h-10 text-lg mt-1 font-silka">
-            ({formatFileSize(file.size)})
-          </p>
-        )}
       </label>
-      <div className="pt-2 flex items-start gap-4 ">
+
+      <div className="mt-4 flex justify-center">
         <CustomButton
           disabled={!file || isLoading}
           onClick={() => handleFileUpload()}
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <div className="flex items-center font-silka-semibold text-xs">
-            {t('upload')}
+          <div className="flex items-center gap-2">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+              ></path>
+            </svg>
+            <span>{isLoading ? 'Uploading...' : t('upload')}</span>
           </div>
         </CustomButton>
       </div>
-    </>
+    </div>
   );
 };
 

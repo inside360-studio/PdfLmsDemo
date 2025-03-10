@@ -23,7 +23,6 @@ const MainPage: FC = () => {
     onSuccess: (result: any) => {
       toast.success(t('fileUploaded'));
       setApiValidationErrors(null);
-      debugger;
       setFeedback(result.output);
     },
     onError: (e: any) => {
@@ -50,20 +49,38 @@ const MainPage: FC = () => {
   };
 
   return (
-    <div className="w-full p-4">
-      <div className="w-full mb-4">
-        <FileUpload onUpdate={handleUpdate}></FileUpload>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 shadow-lg">
+        <div className="max-w-5xl mx-auto px-4">
+          <h1 className="text-2xl font-bold">Learning System</h1>
+        </div>
+      </header>
+
+      <div className="max-w-5xl mx-auto my-8 p-6">
+        <div className="bg-white rounded-xl shadow-md mb-8 overflow-hidden">
+          <div className="bg-gray-50 p-4 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-800">File Upload</h2>
+            <p className="text-sm text-gray-600">
+              Upload a PDF to start learning
+            </p>
+          </div>
+          <div className="p-6">
+            <FileUpload onUpdate={handleUpdate} />
+          </div>
+        </div>
+
+        {courseData.chapters.slice(0, 1).map((chapter, index) => (
+          <ModuleQuiz
+            key={index}
+            chapter={chapter}
+            chapterIndex={index}
+            validationResults={validationResults}
+            onSubmit={handleModuleQuizSubmit}
+          />
+        ))}
+
+        {feedback && <Feedback feedbackData={feedback} />}
       </div>
-      {courseData.chapters.slice(0, 1).map((chapter, index) => (
-        <ModuleQuiz
-          key={index}
-          chapter={chapter}
-          chapterIndex={index}
-          validationResults={validationResults}
-          onSubmit={handleModuleQuizSubmit}
-        />
-      ))}
-      {feedback && <Feedback feedbackData={feedback} />}
     </div>
   );
 };
