@@ -81,15 +81,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
   return (
     <div className="w-full">
       <ApiValidationErrors problemDetails={apiValidationErrors} />
-      <label
+      <div
         {...getFileRootProps({
           className: 'dropzone relative block w-full',
         })}
       >
-        <input
-          {...getFileInputProps()}
-          onClick={(event) => event.stopPropagation()}
-        />
+        <input {...getFileInputProps()} />
         <div
           className={`border-2 border-dashed ${file ? 'border-blue-400 bg-blue-50' : 'border-gray-300'} 
           rounded-lg p-6 transition-all duration-200 ease-in-out hover:border-blue-500 
@@ -134,13 +131,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
             </>
           )}
         </div>
-      </label>
+      </div>
 
       <div className="mt-4 flex justify-center">
         <CustomButton
           disabled={!file || isLoading}
           onClick={() => handleFileUpload()}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:bg-blue-300 disabled:text-white disabled:cursor-not-allowed"
         >
           <div className="flex items-center gap-2">
             <svg
