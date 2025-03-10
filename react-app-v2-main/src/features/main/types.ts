@@ -6,7 +6,7 @@ interface Quiz {
   correctAnswer: string;
 }
 
-interface Chapter {
+export interface Chapter {
   title: string;
   lecture: string;
   quiz: Quiz[];
@@ -26,3 +26,5 @@ interface UserAnswer {
 export interface UserAnswers {
   userAnswers: UserAnswer[];
 }
+
+//
