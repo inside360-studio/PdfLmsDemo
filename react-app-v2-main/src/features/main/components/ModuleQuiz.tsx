@@ -1,5 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { Chapter, UserAnswers } from '../types';
+import toast from 'react-hot-toast';
 
 interface ModuleQuizProps {
   chapter: Chapter;
@@ -17,28 +18,65 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: string]: string;
   }>({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const firstErrorRef = useRef<HTMLDivElement>(null);
 
   const handleAnswerChange = (quizKey: string, answer: string) => {
     setSelectedAnswers((prev) => ({
       ...prev,
       [quizKey]: answer,
     }));
+
+    // Remove this question from validation errors if it was previously marked
+    if (formSubmitted) {
+      setValidationErrors((prev) => prev.filter((key) => key !== quizKey));
+    }
   };
 
-  const handleSubmit = () => {
-    const userAnswers: UserAnswers = {
-      userAnswers: chapter.quiz.map((quiz, quizIndex) => {
-        const key = `quiz-${chapterIndex}-${quizIndex}`;
-        return {
-          question: quiz.question,
-          userAnswer: selectedAnswers[key],
-          correctAnswer: quiz.correctAnswer,
-        };
-      }),
-    };
+  // Check if all questions are answered
+  const validateForm = () => {
+    const unansweredQuestions = chapter.quiz
+      .map((_, quizIndex) => `quiz-${chapterIndex}-${quizIndex}`)
+      .filter(
+        (key) => !selectedAnswers[key] || selectedAnswers[key].trim() === '',
+      );
 
-    console.log('UserAnswers:', userAnswers);
-    onSubmit(userAnswers);
+    setValidationErrors(unansweredQuestions);
+    return unansweredQuestions.length === 0;
+  };
+
+  // Scroll to first error when validation errors change
+  useEffect(() => {
+    if (validationErrors.length > 0 && firstErrorRef.current) {
+      firstErrorRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [validationErrors]);
+
+  const handleSubmit = () => {
+    setFormSubmitted(true);
+
+    if (validateForm()) {
+      const userAnswers: UserAnswers = {
+        userAnswers: chapter.quiz.map((quiz, quizIndex) => {
+          const key = `quiz-${chapterIndex}-${quizIndex}`;
+          return {
+            question: quiz.question,
+            userAnswer: selectedAnswers[key],
+            correctAnswer: quiz.correctAnswer,
+          };
+        }),
+      };
+
+      console.log('UserAnswers:', userAnswers);
+      onSubmit(userAnswers);
+    } else {
+      // Validation failed - the useEffect will scroll to the first error
+      toast.error('Please answer all required questions');
+    }
   };
 
   return (
@@ -66,18 +104,41 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
 
           {chapter.quiz.map((quiz, quizIndex) => {
             const quizKey = `quiz-${chapterIndex}-${quizIndex}`;
+            const isError = validationErrors.includes(quizKey);
+
+            // Set ref for the first error element to enable scrolling
+            const ref =
+              isError && validationErrors[0] === quizKey ? firstErrorRef : null;
+
             return (
               <div
                 key={quizIndex}
-                className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm transition-all duration-200 hover:shadow-md"
+                ref={ref}
+                className={`bg-white p-5 rounded-lg border ${
+                  isError && formSubmitted
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-200'
+                } shadow-sm transition-all duration-200 hover:shadow-md`}
               >
                 <div className="flex items-start mb-3">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold mr-3">
                     {quizIndex + 1}
                   </span>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {quiz.question}
-                  </h3>
+                  <div className="flex flex-col">
+                    <div className="flex items-center">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {quiz.question}
+                      </h3>
+                      <span className="ml-2 text-red-500 font-medium text-sm">
+                        *
+                      </span>
+                    </div>
+                    {isError && formSubmitted && (
+                      <p className="text-red-500 text-sm mt-1">
+                        This question is required
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {quiz.type === 'free-form' ? (
