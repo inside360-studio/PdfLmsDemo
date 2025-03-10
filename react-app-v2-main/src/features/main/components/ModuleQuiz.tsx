@@ -37,7 +37,6 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
       }),
     };
 
-    debugger;
     console.log('UserAnswers:', userAnswers);
     onSubmit(userAnswers);
   };
