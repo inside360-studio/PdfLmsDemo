@@ -1,0 +1,2 @@
+This file is a placeholder to keep the netlify directory in the repository but without the serverless functions.
+The serverless functions have been removed and the application now processes feedback directly on the client side.

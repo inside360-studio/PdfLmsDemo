@@ -14,7 +14,7 @@
     "prepare": "husky",
     "test": "vitest",
     "test:cov": "vitest run --coverage",
-    "netlify:install": "cd netlify/functions && npm install"
+    "netlify:install": "echo \"No serverless functions to install\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.9",
