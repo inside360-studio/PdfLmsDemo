@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npx only-allow pnpm",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -12,7 +13,8 @@
     "format": "prettier --write . && pnpm format:svg",
     "prepare": "husky",
     "test": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test:cov": "vitest run --coverage",
+    "netlify:install": "cd netlify/functions && npm install"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.9",
