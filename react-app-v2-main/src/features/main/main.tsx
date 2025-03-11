@@ -10,16 +10,17 @@ import Feedback from './components/Feedback';
 
 const MainPage: FC = () => {
   const { t } = useTranslation();
-  const [apiValidationErrors, setApiValidationErrors] =
+  // Keep the error state but mark it as used with a comment
+  const [_apiValidationErrors, setApiValidationErrors] =
     useState<ProblemDetails | null>(null);
   const [courseData, setCourseData] = useState<Course>({ chapters: [] });
-  const [validationResults, setValidationResults] = useState<{
+  const [validationResults] = useState<{
     [key: string]: boolean;
   }>({});
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
 
-  const { mutate: getFeedback, isLoading: isFileUploading } = useFeedback({
+  const { mutate: getFeedback } = useFeedback({
     onSuccess: (result: any) => {
       toast.success(t('fileUploaded'));
       setApiValidationErrors(null);
