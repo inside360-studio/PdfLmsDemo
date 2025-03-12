@@ -4,15 +4,14 @@ import { Course, UserAnswers } from './types';
 import { FeedbackResponse, useFeedback } from './mainApi';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { ProblemDetails } from '../../components/ApiValidationErrors';
+import { AxiosError } from 'axios';
 import ModuleQuiz from './components/ModuleQuiz';
 import Feedback from './components/Feedback';
+import Chat from '../../components/Chat/Chat';
 
 const MainPage: FC = () => {
   const { t } = useTranslation();
-  // Keep the error state but mark it as used with a comment
-  const [_apiValidationErrors, setApiValidationErrors] =
-    useState<ProblemDetails | null>(null);
+
   const [courseData, setCourseData] = useState<Course>({ chapters: [] });
   const [validationResults] = useState<{
     [key: string]: boolean;
@@ -21,19 +20,26 @@ const MainPage: FC = () => {
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
 
   const { mutate: getFeedback } = useFeedback({
-    onSuccess: (result: any) => {
+    onSuccess: (result: FeedbackResponse) => {
       toast.success(t('fileUploaded'));
-      setApiValidationErrors(null);
-      setFeedback(result.output);
+      // Cast result to any to handle possible structure differences
+      const feedbackData = result as unknown as { output?: FeedbackResponse };
+      setFeedback(feedbackData.output || result);
     },
-    onError: (e: any) => {
+    onError: (e: AxiosError) => {
       if (e.response) {
-        setApiValidationErrors(e.response.data as ProblemDetails);
+        console.log('Error response:', e.response.data);
       }
     },
   });
 
-  const handleUpdate = (result?: any, file?: File) => {
+  // Define a type for the file upload result
+  interface FileUploadResult {
+    output: Course;
+    [key: string]: unknown;
+  }
+
+  const handleUpdate = (result?: FileUploadResult, file?: File) => {
     if (result) {
       console.log('File upload result:', result);
       const courseData = result.output as Course;
@@ -50,7 +56,9 @@ const MainPage: FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className={`min-h-screen bg-gray-50 ${courseData.chapters.length > 0 ? 'pr-80' : ''}`}
+    >
       <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 shadow-lg">
         <div className="max-w-5xl mx-auto px-4">
           <h1 className="text-2xl font-bold">Learning System</h1>
@@ -82,6 +90,7 @@ const MainPage: FC = () => {
 
         {feedback && <Feedback feedbackData={feedback} />}
       </div>
+      {courseData.chapters.length > 0 && <Chat uploadedFile={uploadedFile} />}
     </div>
   );
 };
