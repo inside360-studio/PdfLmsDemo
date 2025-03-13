@@ -11,6 +11,10 @@ i18n
   .use(initReactI18next)
   .use(LanguageDetector)
   .init({
+    detection: {
+      order: ['navigator', 'htmlTag', 'path', 'subdomain'],
+      caches: ['localStorage'],
+    },
     resources: {
       en: {
         translation: en,
