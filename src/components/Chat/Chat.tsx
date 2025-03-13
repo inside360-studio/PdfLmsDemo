@@ -29,8 +29,8 @@ const Chat = ({ userAnswers }: ChatProps) => {
       const formattedAnswers = userAnswers
         ? {
             answers: userAnswers.userAnswers.map((answer) => ({
-              answer: answer.userAnswer,
               question: answer.question,
+              answer: answer.userAnswer,
             })),
           }
         : undefined;
