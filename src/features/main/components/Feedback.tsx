@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { FeedbackResponse } from '../mainApi';
+import { useTranslation } from 'react-i18next';
 
 interface FeedbackProps {
   feedbackData: FeedbackResponse;
 }
 
 const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
+  const { t } = useTranslation();
   // Calculate score
   const totalQuestions = feedbackData.feedback.length;
   const correctAnswers = feedbackData.feedback.filter(
@@ -35,7 +37,7 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             ></path>
           </svg>
-          Results &amp; Feedback
+          {t('feedback.results')}
         </h1>
       </div>
 
@@ -44,14 +46,13 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-semibold text-gray-800">
-              Your Performance
+              {t('feedback.yourPerformance')}
             </h2>
             <p className="text-gray-600">
-              You answered{' '}
-              <span className="font-medium text-indigo-700">
-                {correctAnswers} out of {totalQuestions}
-              </span>{' '}
-              questions correctly
+              {t('feedback.answeredCorrectly', {
+                correctAnswers,
+                totalQuestions,
+              })}
             </p>
           </div>
           <div className="flex items-center">
@@ -129,7 +130,7 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
       {/* Detailed Feedback */}
       <div className="p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-6">
-          Question Feedback
+          {t('feedback.questionFeedback')}
         </h2>
 
         <div className="space-y-6">
@@ -190,7 +191,7 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
               <div className="ml-11">
                 <div className="mb-2">
                   <span className="text-sm font-medium text-gray-500">
-                    Your answer:
+                    {t('feedback.yourAnswer')}
                   </span>
                   <div
                     className={`mt-1 font-medium ${
@@ -199,7 +200,7 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
                   >
                     {item.userAnswer || (
                       <span className="italic text-gray-500">
-                        No answer provided
+                        {t('feedback.noAnswer')}
                       </span>
                     )}
                   </div>
@@ -207,7 +208,7 @@ const Feedback: FC<FeedbackProps> = ({ feedbackData }) => {
 
                 <div className="bg-white p-4 rounded border border-gray-200 mt-3">
                   <span className="text-sm font-medium text-gray-500">
-                    Feedback:
+                    {t('feedback.feedback')}
                   </span>
                   <p className="mt-1 text-gray-800">{item.feedback}</p>
                 </div>

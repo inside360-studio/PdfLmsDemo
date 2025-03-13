@@ -1,0 +1,46 @@
+{
+  "generalInfo": "Informazioni generali",
+  "languages": "Lingue",
+  "language": "Lingua",
+  "feedbackReceived": "Feedback ricevuto",
+  "fileUpload": {
+    "success": "File caricato con successo",
+    "error": "Errore durante il caricamento del file",
+    "fileSizeExceedsLimit": "La dimensione del file supera il limite di {{limit}}",
+    "clickToUpload": "Clicca per caricare",
+    "dragAndDrop": "o trascina e rilascia",
+    "pdfFilesLimit": "File PDF fino a 100MB",
+    "upload": "Carica",
+    "uploading": "Caricamento in corso..."
+  },
+  "main": {
+    "title": "Sistema di Apprendimento",
+    "fileUploadTitle": "Caricamento File",
+    "uploadDescription": "Carica un PDF per iniziare ad imparare"
+  },
+  "quiz": {
+    "moduleContent": "Contenuto del Modulo",
+    "questions": "Domande",
+    "required": "Questa domanda è obbligatoria",
+    "typeAnswer": "Scrivi la tua risposta...",
+    "submitAnswers": "Invia Risposte",
+    "submitting": "Invio in corso..."
+  },
+  "feedback": {
+    "results": "Risultati & Feedback",
+    "yourPerformance": "La tua Performance",
+    "answeredCorrectly": "Hai risposto correttamente a {{correctAnswers}} domande su {{totalQuestions}}",
+    "questionFeedback": "Feedback sulle Domande",
+    "yourAnswer": "La tua risposta:",
+    "noAnswer": "Nessuna risposta fornita",
+    "feedback": "Feedback:"
+  },
+  "chat": {
+    "greeting": "Ciao! 👋",
+    "introduction": "Mi chiamo Emma. Hai domande sulla formazione?",
+    "availability": "Sono disponibile 24/7 e sono multilingue",
+    "newConversation": "Nuova Conversazione",
+    "typeQuestion": "Scrivi la tua domanda...",
+    "closeChat": "Chiudi chat"
+  }
+}

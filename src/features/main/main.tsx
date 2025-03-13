@@ -7,8 +7,11 @@ import { AxiosError } from 'axios';
 import ModuleQuiz from './components/ModuleQuiz';
 import Feedback from './components/Feedback';
 import Chat from '../../components/Chat/Chat';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../../components/LanguageSelector/LanguageSelector';
 
 const MainPage: FC = () => {
+  const { t } = useTranslation();
   const [courseData, setCourseData] = useState<Course>({ chapters: [] });
   const [validationResults] = useState<{
     [key: string]: boolean;
@@ -21,7 +24,7 @@ const MainPage: FC = () => {
 
   const { mutate: getFeedback, isLoading: isSubmitting } = useFeedback({
     onSuccess: (result: FeedbackResponse) => {
-      toast.success('Feedback received');
+      toast.success(t('feedbackReceived'));
       // Cast result to any to handle possible structure differences
       const feedbackData = result as unknown as { output?: FeedbackResponse };
       setFeedback(feedbackData.output || result);
@@ -30,7 +33,7 @@ const MainPage: FC = () => {
       if (e.response) {
         console.log('Error response:', e.response.data);
       }
-      toast.error('Error receiving feedback');
+      toast.error(t('fileUpload.error'));
     },
   });
 
@@ -60,17 +63,20 @@ const MainPage: FC = () => {
   return (
     <div className={`min-h-screen bg-gray-50 `}>
       <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 shadow-lg">
-        <div className="max-w-5xl mx-auto px-4">
-          <h1 className="text-2xl font-bold">Learning System</h1>
+        <div className="max-w-5xl mx-auto px-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold">{t('main.title')}</h1>
+          <LanguageSelector />
         </div>
       </header>
 
       <div className="max-w-5xl mx-auto my-8 p-6">
         <div className="bg-white rounded-xl shadow-md mb-8 overflow-hidden">
           <div className="bg-gray-50 p-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">File Upload</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              {t('main.fileUploadTitle')}
+            </h2>
             <p className="text-sm text-gray-600">
-              Upload a PDF to start learning
+              {t('main.uploadDescription')}
             </p>
           </div>
           <div className="p-6">

@@ -4,6 +4,7 @@ import './chat.css';
 import { createChat } from '@n8n/chat';
 import { UserAnswers } from '../../features/main/types';
 import { FeedbackResponse } from '../../features/main/mainApi';
+import { useTranslation } from 'react-i18next';
 
 interface ChatProps {
   userAnswers?: UserAnswers | null;
@@ -11,6 +12,7 @@ interface ChatProps {
 }
 
 const Chat = ({ userAnswers, feedbackData }: ChatProps) => {
+  const { t } = useTranslation();
   const [chatInitialized, setChatInitialized] = useState(false);
 
   // Create a ref for the chat container element
@@ -48,18 +50,47 @@ const Chat = ({ userAnswers, feedbackData }: ChatProps) => {
       createChat({
         webhookUrl: webhookUrl,
         metadata: formattedAnswers,
-        initialMessages: [
-          'Hi there! 👋',
-          'My name is Emma. Do you have any questions regarding the training?',
-        ],
+        initialMessages: [t('chat.greeting'), t('chat.introduction')],
         i18n: {
           en: {
-            title: 'Hi there! 👋',
-            subtitle: 'I am available 24/7 and I am multi-lingual',
+            title: t('chat.greeting'),
+            subtitle: t('chat.availability'),
             footer: '',
-            getStarted: 'New Conversation',
-            inputPlaceholder: 'Type your question..',
-            closeButtonTooltip: 'Close chat',
+            getStarted: t('chat.newConversation'),
+            inputPlaceholder: t('chat.typeQuestion'),
+            closeButtonTooltip: t('chat.closeChat'),
+          },
+          de: {
+            title: t('chat.greeting'),
+            subtitle: t('chat.availability'),
+            footer: '',
+            getStarted: t('chat.newConversation'),
+            inputPlaceholder: t('chat.typeQuestion'),
+            closeButtonTooltip: t('chat.closeChat'),
+          },
+          es: {
+            title: t('chat.greeting'),
+            subtitle: t('chat.availability'),
+            footer: '',
+            getStarted: t('chat.newConversation'),
+            inputPlaceholder: t('chat.typeQuestion'),
+            closeButtonTooltip: t('chat.closeChat'),
+          },
+          fr: {
+            title: t('chat.greeting'),
+            subtitle: t('chat.availability'),
+            footer: '',
+            getStarted: t('chat.newConversation'),
+            inputPlaceholder: t('chat.typeQuestion'),
+            closeButtonTooltip: t('chat.closeChat'),
+          },
+          it: {
+            title: t('chat.greeting'),
+            subtitle: t('chat.availability'),
+            footer: '',
+            getStarted: t('chat.newConversation'),
+            inputPlaceholder: t('chat.typeQuestion'),
+            closeButtonTooltip: t('chat.closeChat'),
           },
         },
       });
@@ -77,7 +108,7 @@ const Chat = ({ userAnswers, feedbackData }: ChatProps) => {
     } catch (error) {
       console.error('Error initializing n8n chat:', error);
     }
-  }, [userAnswers, feedbackData]); // Add feedbackData as dependency
+  }, [userAnswers, feedbackData, t]); // Add t as dependency
 
   // Initialize chat when component mounts
   useEffect(() => {

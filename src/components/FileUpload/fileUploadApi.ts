@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 import api from '../../utils/api';
-
 import { Course } from '../../features/main/types';
 
 export interface FileUploadResult {
@@ -9,11 +8,15 @@ export interface FileUploadResult {
   [key: string]: unknown;
 }
 
+export interface FileUploadParams {
+  file: File;
+}
+
 export const useFileUpload = (
-  options?: UseMutationOptions<FileUploadResult, AxiosError, File>,
+  options?: UseMutationOptions<FileUploadResult, AxiosError, FileUploadParams>,
 ) => {
   return useMutation(
-    async (file: File): Promise<FileUploadResult> => {
+    async ({ file }: FileUploadParams): Promise<FileUploadResult> => {
       const formData = new FormData();
       formData.append('file', file);
 

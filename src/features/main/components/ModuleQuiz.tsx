@@ -2,6 +2,7 @@ import { FC, useState, useRef, useEffect } from 'react';
 import { Chapter, UserAnswers } from '../types';
 import toast from 'react-hot-toast';
 import CustomButton from '../../../components/CustomButton';
+import { useTranslation } from 'react-i18next';
 
 interface ModuleQuizProps {
   chapter: Chapter;
@@ -18,6 +19,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
   onSubmit,
   isSubmitting,
 }) => {
+  const { t } = useTranslation();
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: string]: string;
   }>({});
@@ -78,7 +80,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
       onSubmit(userAnswers);
     } else {
       // Validation failed - the useEffect will scroll to the first error
-      toast.error('Please answer all required questions');
+      toast.error(t('quiz.required'));
     }
   };
 
@@ -94,7 +96,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
         {/* Lecture Section */}
         <div className="mb-8 bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
           <h3 className="text-lg font-medium text-blue-800 mb-2">
-            Module Content
+            {t('quiz.moduleContent')}
           </h3>
           <p className="text-gray-800 leading-relaxed">{chapter.lecture}</p>
         </div>
@@ -102,7 +104,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
         {/* Quiz Section */}
         <div className="space-y-6">
           <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">
-            Questions
+            {t('quiz.questions')}
           </h3>
 
           {chapter.quiz.map((quiz, quizIndex) => {
@@ -138,7 +140,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
                     </div>
                     {isError && formSubmitted && (
                       <p className="text-red-500 text-sm mt-1">
-                        This question is required
+                        {t('quiz.required')}
                       </p>
                     )}
                   </div>
@@ -155,7 +157,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
                         handleAnswerChange(quizKey, e.target.value)
                       }
                       className="border border-gray-300 rounded-lg px-4 py-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                      placeholder="Type your answer..."
+                      placeholder={t('quiz.typeAnswer')}
                     />
                   </div>
                 ) : (
@@ -229,7 +231,9 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-              <span>{isSubmitting ? 'Submitting...' : 'Submit Answers'}</span>
+              <span>
+                {isSubmitting ? t('quiz.submitting') : t('quiz.submitAnswers')}
+              </span>
             </div>
           </CustomButton>
         </div>

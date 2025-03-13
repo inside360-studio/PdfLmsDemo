@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ interface FileUploadProps {
   onUpdate: (result?: FileUploadResult, file?: File) => void;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
+const FileUpload: FC<FileUploadProps> = ({ onUpdate }) => {
   const { t } = useTranslation();
   const [apiValidationErrors, setApiValidationErrors] =
     useState<ProblemDetails | null>(null);
@@ -20,12 +20,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
 
   const { mutate: uploadFile, isLoading: isFileUploading } = useFileUpload({
     onSuccess: (result) => {
-      toast.success('File uploaded successfully');
+      toast.success(t('fileUpload.success'));
       setApiValidationErrors(null);
       onUpdate(result, file || undefined);
     },
     onError: () => {
-      toast.error('Error uploading file');
+      toast.error(t('fileUpload.error'));
     },
   });
 
@@ -73,7 +73,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
   };
 
   const handleFileUpload = () => {
-    uploadFile(file as File);
+    if (file) {
+      uploadFile({ file });
+    }
   };
 
   return (
@@ -121,9 +123,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
               ) : (
                 <div className="text-center">
                   <p className="text-gray-700 font-medium mb-1">
-                    {t('clickToUpload')} or drag & drop
+                    {t('fileUpload.clickToUpload')}{' '}
+                    {t('fileUpload.dragAndDrop')}
                   </p>
-                  <p className="text-gray-500 text-sm">PDF files up to 100MB</p>
+                  <p className="text-gray-500 text-sm">
+                    {t('fileUpload.pdfFilesLimit')}
+                  </p>
                 </div>
               )}
             </>
@@ -134,7 +139,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
       <div className="mt-4 flex justify-center">
         <CustomButton
           disabled={!file || isLoading}
-          onClick={() => handleFileUpload()}
+          onClick={handleFileUpload}
           className="px-6 py-2 bg-blue-600 hover:bg-blue-700 hover:text-white text-gray-500 font-medium rounded-lg transition-colors duration-200 ease-in-out disabled:bg-blue-300 disabled:text-gray disabled:cursor-not-allowed"
         >
           <div className="flex items-center gap-2">
@@ -152,7 +157,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
               ></path>
             </svg>
-            <span>{isLoading ? 'Uploading...' : t('upload')}</span>
+            <span>
+              {isLoading ? t('fileUpload.uploading') : t('fileUpload.upload')}
+            </span>
           </div>
         </CustomButton>
       </div>

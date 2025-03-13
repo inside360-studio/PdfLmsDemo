@@ -20,8 +20,6 @@ export const useFeedback = (
     }): Promise<FeedbackResponse> => {
       const formData = new FormData();
       formData.append('file', file);
-
-      // Include userAnswers to avoid unused variable warning
       formData.append('userAnswers', JSON.stringify(userAnswers));
 
       const response: FeedbackResponse = await api.post('/feedback', formData, {
