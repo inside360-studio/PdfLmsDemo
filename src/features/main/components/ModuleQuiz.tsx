@@ -3,6 +3,7 @@ import { Chapter, UserAnswers } from '../types';
 import toast from 'react-hot-toast';
 import CustomButton from '../../../components/CustomButton';
 import { useTranslation } from 'react-i18next';
+import ReactMarkdown from 'react-markdown';
 
 interface ModuleQuizProps {
   chapter: Chapter;
@@ -98,7 +99,9 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
           <h3 className="text-lg font-medium text-blue-800 mb-2">
             {t('quiz.moduleContent')}
           </h3>
-          <p className="text-gray-800 leading-relaxed">{chapter.lecture}</p>
+          <div className="prose prose-lg max-w-none text-gray-800">
+            <ReactMarkdown>{chapter.lecture}</ReactMarkdown>
+          </div>
         </div>
 
         {/* Quiz Section */}
