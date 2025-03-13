@@ -18,6 +18,9 @@ const MainPage: FC = () => {
   }>({});
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
+  const [quizUserAnswers, setQuizUserAnswers] = useState<UserAnswers | null>(
+    null,
+  );
 
   const { mutate: getFeedback } = useFeedback({
     onSuccess: (result: FeedbackResponse) => {
@@ -52,13 +55,12 @@ const MainPage: FC = () => {
   };
 
   const handleModuleQuizSubmit = (userAnswers: UserAnswers) => {
+    setQuizUserAnswers(userAnswers);
     getFeedback({ file: uploadedFile as File, userAnswers: userAnswers });
   };
 
   return (
-    <div
-      className={`min-h-screen bg-gray-50 ${courseData.chapters.length > 0 ? 'pr-80' : ''}`}
-    >
+    <div className={`min-h-screen bg-gray-50 `}>
       <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 shadow-lg">
         <div className="max-w-5xl mx-auto px-4">
           <h1 className="text-2xl font-bold">Learning System</h1>
@@ -89,8 +91,8 @@ const MainPage: FC = () => {
         ))}
 
         {feedback && <Feedback feedbackData={feedback} />}
+        {feedback && <Chat userAnswers={quizUserAnswers} />}
       </div>
-      {courseData.chapters.length > 0 && <Chat uploadedFile={uploadedFile} />}
     </div>
   );
 };
