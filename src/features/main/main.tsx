@@ -19,7 +19,7 @@ const MainPage: FC = () => {
     null,
   );
 
-  const { mutate: getFeedback } = useFeedback({
+  const { mutate: getFeedback, isLoading: isSubmitting } = useFeedback({
     onSuccess: (result: FeedbackResponse) => {
       toast.success('Feedback received');
       // Cast result to any to handle possible structure differences
@@ -85,6 +85,7 @@ const MainPage: FC = () => {
             chapterIndex={index}
             validationResults={validationResults}
             onSubmit={handleModuleQuizSubmit}
+            isSubmitting={isSubmitting}
           />
         ))}
 

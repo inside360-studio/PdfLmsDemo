@@ -1,12 +1,14 @@
 import { FC, useState, useRef, useEffect } from 'react';
 import { Chapter, UserAnswers } from '../types';
 import toast from 'react-hot-toast';
+import CustomButton from '../../../components/CustomButton';
 
 interface ModuleQuizProps {
   chapter: Chapter;
   chapterIndex: number;
   validationResults: { [key: string]: boolean };
   onSubmit: (userAnswers: UserAnswers) => void;
+  isSubmitting: boolean;
 }
 
 const ModuleQuiz: FC<ModuleQuizProps> = ({
@@ -14,6 +16,7 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
   chapterIndex,
   validationResults,
   onSubmit,
+  isSubmitting,
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: string]: string;
@@ -206,12 +209,29 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
 
         {/* Submit Button */}
         <div className="mt-8 flex justify-end">
-          <button
+          <CustomButton
+            disabled={isSubmitting}
             onClick={handleSubmit}
-            className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+            className="px-6 py-3 h-12 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md disabled:from-blue-200 disabled:to-blue-300 disabled:text-white disabled:cursor-not-allowed"
           >
-            Submit Answers
-          </button>
+            <div className="flex items-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+              <span>{isSubmitting ? 'Submitting...' : 'Submit Answers'}</span>
+            </div>
+          </CustomButton>
         </div>
       </div>
     </div>
