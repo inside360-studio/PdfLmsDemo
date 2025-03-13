@@ -91,7 +91,9 @@ const MainPage: FC = () => {
         ))}
 
         {feedback && <Feedback feedbackData={feedback} />}
-        {feedback && <Chat userAnswers={quizUserAnswers} />}
+        {feedback && (
+          <Chat userAnswers={quizUserAnswers} feedbackData={feedback} />
+        )}
       </div>
     </div>
   );

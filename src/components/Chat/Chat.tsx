@@ -3,12 +3,14 @@ import '@n8n/chat/style.css';
 import './chat.css';
 import { createChat } from '@n8n/chat';
 import { UserAnswers } from '../../features/main/types';
+import { FeedbackResponse } from '../../features/main/mainApi';
 
 interface ChatProps {
   userAnswers?: UserAnswers | null;
+  feedbackData?: FeedbackResponse;
 }
 
-const Chat = ({ userAnswers }: ChatProps) => {
+const Chat = ({ userAnswers, feedbackData }: ChatProps) => {
   const [chatInitialized, setChatInitialized] = useState(false);
 
   // Create a ref for the chat container element
@@ -25,13 +27,20 @@ const Chat = ({ userAnswers }: ChatProps) => {
       // Use the env variables for webhook URL and chat endpoint
       const webhookUrl = `${import.meta.env.VITE_APP_API_SERVER_URL}/${import.meta.env.VITE_APP_CHAT_ENDPOINT}`;
 
-      // Format userAnswers into a simple object format for metadata
+      // Format and merge userAnswers and feedback into metadata
       const formattedAnswers = userAnswers
         ? {
-            answers: userAnswers.userAnswers.map((answer) => ({
-              question: answer.question,
-              answer: answer.userAnswer,
-            })),
+            answers: userAnswers.userAnswers.map((answer) => {
+              const feedbackItem = feedbackData?.feedback.find(
+                (item) => item.question === answer.question,
+              );
+              return {
+                question: answer.question,
+                answer: answer.userAnswer,
+                isCorrect: feedbackItem?.isCorrect,
+                feedback: feedbackItem?.feedback,
+              };
+            }),
           }
         : undefined;
 
@@ -54,7 +63,7 @@ const Chat = ({ userAnswers }: ChatProps) => {
     } catch (error) {
       console.error('Error initializing n8n chat:', error);
     }
-  }, [userAnswers]); // Add userAnswers as dependency
+  }, [userAnswers, feedbackData]); // Add feedbackData as dependency
 
   // Initialize chat when component mounts
   useEffect(() => {
