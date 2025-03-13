@@ -146,9 +146,9 @@ const ModuleQuiz: FC<ModuleQuizProps> = ({
                   </div>
                 </div>
 
-                {quiz.type === 'free-form' ||
-                quiz.type === 'freeform' ||
-                quiz.type === 'free_form' ? (
+                {quiz.type.toLowerCase() === 'free-form' ||
+                quiz.type.toLowerCase() === 'freeform' ||
+                quiz.type.toLowerCase() === 'free_form' ? (
                   <div className="ml-11">
                     <input
                       type="text"
