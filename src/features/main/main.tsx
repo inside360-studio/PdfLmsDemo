@@ -3,15 +3,12 @@ import FileUpload from '../../components/FileUpload/fileUpload';
 import { Course, UserAnswers } from './types';
 import { FeedbackResponse, useFeedback } from './mainApi';
 import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
 import { AxiosError } from 'axios';
 import ModuleQuiz from './components/ModuleQuiz';
 import Feedback from './components/Feedback';
 import Chat from '../../components/Chat/Chat';
 
 const MainPage: FC = () => {
-  const { t } = useTranslation();
-
   const [courseData, setCourseData] = useState<Course>({ chapters: [] });
   const [validationResults] = useState<{
     [key: string]: boolean;
@@ -24,7 +21,7 @@ const MainPage: FC = () => {
 
   const { mutate: getFeedback } = useFeedback({
     onSuccess: (result: FeedbackResponse) => {
-      toast.success(t('fileUploaded'));
+      toast.success('Feedback received');
       // Cast result to any to handle possible structure differences
       const feedbackData = result as unknown as { output?: FeedbackResponse };
       setFeedback(feedbackData.output || result);
@@ -33,6 +30,7 @@ const MainPage: FC = () => {
       if (e.response) {
         console.log('Error response:', e.response.data);
       }
+      toast.error('Error receiving feedback');
     },
   });
 

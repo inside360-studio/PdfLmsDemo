@@ -5,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 import ApiValidationErrors, { ProblemDetails } from '../ApiValidationErrors';
 import Spinner from '../Spinner/Spinner';
 import CustomButton from '../CustomButton';
-import { useFileUpload } from './fileUploadApi';
+import { useFileUpload, FileUploadResult } from './fileUploadApi';
 
 interface FileUploadProps {
-  onUpdate: (result?: any, file?: File) => void;
+  onUpdate: (result?: FileUploadResult, file?: File) => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
@@ -20,14 +20,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
 
   const { mutate: uploadFile, isLoading: isFileUploading } = useFileUpload({
     onSuccess: (result) => {
-      toast.success(t('fileUploaded'));
+      toast.success('File uploaded successfully');
       setApiValidationErrors(null);
       onUpdate(result, file || undefined);
     },
-    onError: (e: any) => {
-      if (e.response) {
-        setApiValidationErrors(e.response.data as ProblemDetails);
-      }
+    onError: () => {
+      toast.error('Error uploading file');
     },
   });
 
@@ -52,7 +50,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpdate }) => {
         setFile(file);
       }
     },
-    [uploadFile, t],
+    [t],
   );
 
   const { getRootProps: getFileRootProps, getInputProps: getFileInputProps } =

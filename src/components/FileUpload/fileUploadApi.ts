@@ -2,19 +2,22 @@ import { AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 import api from '../../utils/api';
 
-export interface UploadAvatarResponse {
-  id: string;
-  fileUrl: string;
+import { Course } from '../../features/main/types';
+
+export interface FileUploadResult {
+  output: Course;
+  [key: string]: unknown;
 }
+
 export const useFileUpload = (
-  options?: UseMutationOptions<UploadAvatarResponse, AxiosError, File>,
+  options?: UseMutationOptions<FileUploadResult, AxiosError, File>,
 ) => {
   return useMutation(
-    async (file: File): Promise<UploadAvatarResponse> => {
+    async (file: File): Promise<FileUploadResult> => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response: UploadAvatarResponse = await api.post('/pdf', formData, {
+      const response: FileUploadResult = await api.post('/pdf', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
