@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import '@n8n/chat/style.css';
+import './chat.css';
 import { createChat } from '@n8n/chat';
 import { UserAnswers } from '../../features/main/types';
 

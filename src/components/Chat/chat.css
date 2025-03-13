@@ -1,0 +1,128 @@
+:root {
+  /* Colors - Updated to match project blue theme */
+  --chat--color-primary: #2563eb; /* blue-600 */
+  --chat--color-primary-shade-50: #1d4ed8; /* blue-700 */
+  --chat--color-primary-shade-100: #1e40af; /* blue-800 */
+  --chat--color-secondary: #0ea5e9; /* sky-500 - complementary to primary blue */
+  --chat--color-secondary-shade-50: #0284c7; /* sky-600 */
+  --chat--color-white: #ffffff;
+  --chat--color-light: #f8fafc; /* slate-50 - matching project's light theme */
+  --chat--color-light-shade-50: #f1f5f9; /* slate-100 */
+  --chat--color-light-shade-100: #e2e8f0; /* slate-200 */
+  --chat--color-medium: #cbd5e1; /* slate-300 */
+  --chat--color-dark: #1e293b; /* slate-800 - softer than original black */
+  --chat--color-disabled: #64748b; /* slate-500 */
+  --chat--color-typing: #334155; /* slate-700 */
+
+  /* Base Layout */
+  --chat--spacing: 1rem;
+  --chat--border-radius: 0.5rem; /* Increased to match modern UI */
+  --chat--transition-duration: 0.15s;
+  --chat--font-family: (
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen-Sans,
+    Ubuntu,
+    Cantarell,
+    'Helvetica Neue',
+    sans-serif
+  );
+
+  /* Window Dimensions */
+  --chat--window--width: 400px;
+  --chat--window--height: 600px;
+  --chat--window--bottom: var(--chat--spacing);
+  --chat--window--right: var(--chat--spacing);
+  --chat--window--z-index: 9999;
+  --chat--window--border: 1px solid var(--chat--color-medium);
+  --chat--window--border-radius: var(--chat--border-radius);
+  --chat--window--margin-bottom: var(--chat--spacing);
+
+  /* Header Styles */
+  --chat--header-height: auto;
+  --chat--header--padding: var(--chat--spacing);
+  --chat--header--background: var(
+    --chat--color-primary
+  ); /* Changed to primary blue */
+  --chat--header--color: var(--chat--color-white);
+  --chat--header--border-top: none;
+  --chat--header--border-bottom: 1px solid var(--chat--color-primary-shade-50);
+  --chat--header--border-left: none;
+  --chat--header--border-right: none;
+  --chat--heading--font-size: 1.5em; /* Reduced for better proportion */
+  --chat--subtitle--font-size: inherit;
+  --chat--subtitle--line-height: 1.8;
+
+  /* Message Styles */
+  --chat--message--font-size: 1rem;
+  --chat--message--padding: var(--chat--spacing);
+  --chat--message--border-radius: var(--chat--border-radius);
+  --chat--message-line-height: 1.5;
+  --chat--message--margin-bottom: calc(var(--chat--spacing) * 1);
+  --chat--message--bot--background: var(--chat--color-white);
+  --chat--message--bot--color: var(--chat--color-dark);
+  --chat--message--bot--border: 1px solid var(--chat--color-light-shade-50);
+  --chat--message--user--background: var(--chat--color-primary);
+  --chat--message--user--color: var(--chat--color-white);
+  --chat--message--user--border: none;
+  --chat--message--pre--background: var(--chat--color-light);
+  --chat--messages-list--padding: var(--chat--spacing);
+
+  /* Toggle Button */
+  --chat--toggle--size: 56px; /* Slightly smaller for better proportion */
+  --chat--toggle--width: var(--chat--toggle--size);
+  --chat--toggle--height: var(--chat--toggle--size);
+  --chat--toggle--border-radius: 50%;
+  --chat--toggle--background: var(--chat--color-primary);
+  --chat--toggle--hover--background: var(--chat--color-primary-shade-50);
+  --chat--toggle--active--background: var(--chat--color-primary-shade-100);
+  --chat--toggle--color: var(--chat--color-white);
+
+  /* Input Area */
+  --chat--textarea--height: 50px;
+  --chat--textarea--max-height: 30rem;
+  --chat--input--font-size: inherit;
+  --chat--input--border: 1px solid var(--chat--color-medium);
+  --chat--input--border-radius: var(--chat--border-radius);
+  --chat--input--padding: 0.8rem;
+  --chat--input--background: var(--chat--color-white);
+  --chat--input--text-color: var(--chat--color-dark);
+  --chat--input--line-height: 1.5;
+  --chat--input--placeholder--font-size: var(--chat--input--font-size);
+  --chat--input--border-active: 1px solid var(--chat--color-medium);
+  --chat--input--left--panel--width: 2rem;
+
+  /* Button Styles */
+  --chat--button--color: var(--chat--color-white);
+  --chat--button--background: var(--chat--color-primary);
+  --chat--button--padding: calc(var(--chat--spacing) * 1 / 2)
+    var(--chat--spacing);
+  --chat--button--border-radius: var(--chat--border-radius);
+  --chat--button--hover--color: var(--chat--color-white);
+  --chat--button--hover--background: var(--chat--color-primary-shade-50);
+  --chat--close--button--color-hover: var(--chat--color-primary);
+
+  /* Send and File Buttons */
+  --chat--input--send--button--background: var(--chat--color-white);
+  --chat--input--send--button--color: var(--chat--color-primary);
+  --chat--input--send--button--background-hover: var(--chat--color-light);
+  --chat--input--send--button--color-hover: var(--chat--color-primary-shade-50);
+  --chat--input--file--button--background: var(--chat--color-white);
+  --chat--input--file--button--color: var(--chat--color-primary);
+  --chat--input--file--button--background-hover: var(--chat--color-light);
+  --chat--input--file--button--color-hover: var(--chat--color-primary-shade-50);
+  --chat--files-spacing: 0.25rem;
+
+  /* Body and Footer */
+  --chat--body--background: var(--chat--color-light);
+  --chat--footer--background: var(--chat--color-white);
+  --chat--footer--color: var(--chat--color-dark);
+}
+
+/* Override class styles */
+.chat-message {
+  max-width: 75%; /* Increased from 50% for better readability */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+}
