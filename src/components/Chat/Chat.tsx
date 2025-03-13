@@ -48,6 +48,20 @@ const Chat = ({ userAnswers, feedbackData }: ChatProps) => {
       createChat({
         webhookUrl: webhookUrl,
         metadata: formattedAnswers,
+        initialMessages: [
+          'Hi there! 👋',
+          'My name is Emma. Do you have any questions regarding the training?',
+        ],
+        i18n: {
+          en: {
+            title: 'Hi there! 👋',
+            subtitle: 'I am available 24/7 and I am multi-lingual',
+            footer: '',
+            getStarted: 'New Conversation',
+            inputPlaceholder: 'Type your question..',
+            closeButtonTooltip: 'Close chat',
+          },
+        },
       });
 
       if (formattedAnswers) {
