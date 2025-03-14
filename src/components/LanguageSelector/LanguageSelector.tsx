@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
 
 const LANGUAGES = {
   en: { name: 'English' },
@@ -11,8 +10,16 @@ const LANGUAGES = {
 } as const;
 
 const LanguageSelector: FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const languages = Object.keys(i18n.options.resources || {}).sort();
+
+  const getShortLangCode = (fullCode: string) => fullCode.split('-')[0];
+
+  const handleLanguageChange = (lang: string) => {
+    i18n.changeLanguage(lang).then(() => {
+      localStorage.setItem('i18nextLng', lang);
+    });
+  };
 
   return (
     <div className="relative flex items-center space-x-2">
@@ -22,8 +29,8 @@ const LanguageSelector: FC = () => {
       <div className="flex items-center relative">
         <select
           id="language"
-          value={i18n.language}
-          onChange={(e) => i18n.changeLanguage(e.target.value)}
+          value={getShortLangCode(i18n.language)}
+          onChange={(e) => handleLanguageChange(e.target.value)}
           className="bg-white text-gray-900 font-medium rounded-md px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 border border-blue-100 appearance-none w-[108px] pr-8"
         >
           {languages.map((lang) => {
