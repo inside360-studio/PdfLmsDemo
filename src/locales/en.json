@@ -3,6 +3,9 @@
   "languages": "Languages",
   "language": "Language",
   "feedbackReceived": "Feedback received",
+  "api": {
+    "fetchError": "Failed to fetch course data. Please try again."
+  },
   "fileUpload": {
     "success": "File uploaded successfully",
     "error": "Error uploading file",
@@ -16,7 +19,9 @@
   "main": {
     "title": "Learning System",
     "fileUploadTitle": "File Upload",
-    "uploadDescription": "Upload a PDF to start learning"
+    "uploadDescription": "Upload a PDF to start learning",
+    "courseTitle": "Course Content",
+    "courseLoaded": "Course content loaded successfully"
   },
   "quiz": {
     "moduleContent": "Module Content",

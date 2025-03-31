@@ -1,7 +1,6 @@
-import { FC, useState } from 'react';
-import FileUpload from '../../components/FileUpload/fileUpload';
+import { FC, useState, useEffect } from 'react';
 import { Course, UserAnswers } from './types';
-import { FeedbackResponse, useFeedback } from './mainApi';
+import { FeedbackResponse, useFeedback, useFetchCourseData } from './mainApi';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import ModuleQuiz from './components/ModuleQuiz';
@@ -9,6 +8,7 @@ import Feedback from './components/Feedback';
 import Chat from '../../components/Chat/Chat';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../components/LanguageSelector/LanguageSelector';
+import Spinner from '../../components/Spinner/Spinner';
 
 const MainPage: FC = () => {
   const { t } = useTranslation();
@@ -16,11 +16,25 @@ const MainPage: FC = () => {
   const [validationResults] = useState<{
     [key: string]: boolean;
   }>({});
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<FeedbackResponse | null>(null);
   const [quizUserAnswers, setQuizUserAnswers] = useState<UserAnswers | null>(
     null,
   );
+
+  // Fetch course data using the API
+  const { data, isLoading, error: fetchError } = useFetchCourseData();
+
+  // Set course data when API returns results
+  useEffect(() => {
+    if (data) {
+      setCourseData(data);
+    }
+    if (fetchError) {
+      setError(t('api.fetchError'));
+      toast.error(t('api.fetchError'));
+    }
+  }, [data, fetchError, t]);
 
   const { mutate: getFeedback, isLoading: isSubmitting } = useFeedback({
     onSuccess: (result: FeedbackResponse) => {
@@ -37,27 +51,9 @@ const MainPage: FC = () => {
     },
   });
 
-  // Define a type for the file upload result
-  interface FileUploadResult {
-    output: Course;
-    [key: string]: unknown;
-  }
-
-  const handleUpdate = (result?: FileUploadResult, file?: File) => {
-    if (result) {
-      console.log('File upload result:', result);
-      const courseData = result.output as Course;
-      setCourseData(courseData);
-      console.log(courseData);
-    }
-    if (file) {
-      setUploadedFile(file);
-    }
-  };
-
   const handleModuleQuizSubmit = (userAnswers: UserAnswers) => {
     setQuizUserAnswers(userAnswers);
-    getFeedback({ file: uploadedFile as File, userAnswers: userAnswers });
+    getFeedback({ userAnswers });
   };
 
   return (
@@ -70,19 +66,24 @@ const MainPage: FC = () => {
       </header>
 
       <div className="max-w-5xl mx-auto my-8 p-6">
-        <div className="bg-white rounded-xl shadow-md mb-8 overflow-hidden">
-          <div className="bg-gray-50 p-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {t('main.fileUploadTitle')}
-            </h2>
-            <p className="text-sm text-gray-600">
-              {t('main.uploadDescription')}
-            </p>
-          </div>
-          <div className="p-6">
-            <FileUpload onUpdate={handleUpdate} />
-          </div>
-        </div>
+        <>
+          {isLoading && (
+            <div className="flex justify-center items-center p-12">
+              <Spinner />
+            </div>
+          )}
+          {error && (
+            <div className="text-center p-12 text-red-500">
+              <p>{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                {t('common.reload')}
+              </button>
+            </div>
+          )}
+        </>
 
         {courseData.chapters.slice(0, 1).map((chapter, index) => (
           <ModuleQuiz
