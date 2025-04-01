@@ -75,14 +75,27 @@ export function transformApiResponseToCourse(apiData: any): Course {
         options: [],
       };
 
-      // Generate options for multiple-choice questions
-      if (questionType === 'multiple-choice' && answer) {
-        quizItem.options = [answer];
-        // Add 2-3 plausible but incorrect options
-        if (answer === '4') {
-          quizItem.options.push('2', '3', '5');
-        } else {
-          // Generate some generic options
+      // Use provided options from the API response
+      if (questionType === 'multiple-choice') {
+        const optionsStr = courseItem[`Optionen ${i}`];
+        if (optionsStr) {
+          try {
+            quizItem.options = JSON.parse(optionsStr);
+          } catch (e) {
+            console.error(`Failed to parse options for question ${i}:`, e);
+            // Fallback to a default set of options if parsing fails
+            quizItem.options = [answer || ''];
+            if (answer) {
+              quizItem.options.push(
+                'Keine der Antworten ist richtig',
+                'Alle der oben genannten',
+                'Nicht spezifiziert in der Dokumentation',
+              );
+            }
+          }
+        } else if (answer) {
+          // Fallback if no options are provided
+          quizItem.options = [answer];
           quizItem.options.push(
             'Keine der Antworten ist richtig',
             'Alle der oben genannten',
